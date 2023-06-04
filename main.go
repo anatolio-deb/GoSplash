@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/anatolio-deb/gosplash/random"
+	"github.com/anatolio-deb/gosplash/topics"
 )
 
 func main() {

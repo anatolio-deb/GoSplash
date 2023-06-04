@@ -64,22 +64,22 @@ func Get(topicIDs []string) (Photo, error) {
 	return p, json.Unmarshal(b, &p)
 }
 
-// func GetDownloadURL(url string) (string, error) {
-// 	var r DownloadURL
-// 	client := &http.Client{}
-// 	req, err := http.NewRequest(http.MethodGet, url, nil)
-// 	if err != nil {
-// 		return r.URL, err
-// 	}
-// 	req.Header.Add("Authorization", fmt.Sprintf("Client-ID %s", ""))
-// 	resp, err := client.Do(req)
-// 	if err != nil {
-// 		return r.URL, err
-// 	}
-// 	b, err := io.ReadAll(resp.Body)
-// 	if err != nil {
-// 		return r.URL, err
-// 	}
+func GetDownloadURL(url string) (string, error) {
+	var r DownloadURL
+	client := &http.Client{}
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		return r.URL, err
+	}
+	req.Header.Add("Authorization", fmt.Sprintf("Client-ID %s", ""))
+	resp, err := client.Do(req)
+	if err != nil {
+		return r.URL, err
+	}
+	b, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return r.URL, err
+	}
 
-// 	return r.URL, json.Unmarshal(b, &r)
-// }
+	return r.URL, json.Unmarshal(b, &r)
+}
