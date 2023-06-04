@@ -9,6 +9,10 @@ import (
 	"strings"
 )
 
+type DownloadURL struct {
+	URL string `json:"url"`
+}
+
 type Links struct {
 	Self             string `json:"self"`
 	HTML             string `json:"html"`
