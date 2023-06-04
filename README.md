@@ -1,5 +1,5 @@
 # GoSplash
-Set a random wallpaper from (Unsplash)[https://unsplash.com]. Only for elementaryOS.
+Set a random wallpaper from [Unsplash](https://unsplash.com). Only for elementaryOS.
 
 ## Usage
 ```
