@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	ptr := flag.String("topics", "", "a comma separated list of Unsplash topics, e.g. nature,ocean")
+	ptr := flag.String("topics", "", "a comma separated list of Unsplash topics, e.g. nature,wallpapers")
 	flag.Parse()
 	slugs := strings.Split(*ptr, ",")
 	ids := make([]string, len(slugs))
@@ -25,7 +25,6 @@ func main() {
 			ids[i] = t.ID
 		}
 	}
-	log.Println(ids)
 	p, err := random.Get(ids)
 	if err != nil {
 		log.Fatal(err)
@@ -38,7 +37,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	filepath, err := download(link, p.ID+fmt.Sprintf(".%s", u.Query()["fm"][0]))
+	var filepath string
+	fm := u.Query().Get("fm")
+	if len(fm) == 0 {
+		fm = "jpg"
+	}
+	filepath, err = download(u.String(), p.ID+fmt.Sprintf(".%s", fm))
 	if err != nil {
 		log.Fatal(err)
 	}

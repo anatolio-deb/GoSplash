@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/anatolio-deb/gosplash/common"
 )
 
 type DownloadURL struct {
@@ -27,7 +29,7 @@ type Photo struct {
 
 func Get(topicIDs []string) (Photo, error) {
 	var p Photo
-	url, err := url.Parse("https://api.unsplash.com")
+	url, err := url.Parse(common.APIURL)
 	if err != nil {
 		return p, err
 	}
@@ -47,7 +49,7 @@ func Get(topicIDs []string) (Photo, error) {
 		return p, err
 	}
 
-	req.Header.Add("Authorization", fmt.Sprintf("Client-ID %s", ""))
+	req.Header.Add("Authorization", fmt.Sprintf("Client-ID %s", common.AccessKey))
 
 	if err != nil {
 		return p, err
@@ -75,7 +77,7 @@ func GetDownloadURL(url string) (string, error) {
 	if err != nil {
 		return r.URL, err
 	}
-	req.Header.Add("Authorization", fmt.Sprintf("Client-ID %s", ""))
+	req.Header.Add("Authorization", fmt.Sprintf("Client-ID %s", common.AccessKey))
 	resp, err := client.Do(req)
 	if err != nil {
 		return r.URL, err

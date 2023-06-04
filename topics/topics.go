@@ -6,6 +6,8 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+
+	"github.com/anatolio-deb/gosplash/common"
 )
 
 type Topic struct {
@@ -14,7 +16,7 @@ type Topic struct {
 
 func Get(slug string) (Topic, error) {
 	var t Topic
-	url, err := url.Parse("")
+	url, err := url.Parse(common.APIURL)
 	if err != nil {
 		return t, err
 	}
@@ -26,7 +28,7 @@ func Get(slug string) (Topic, error) {
 		return t, err
 	}
 
-	req.Header.Add("Authorization", fmt.Sprintf("Client-ID %s", ""))
+	req.Header.Add("Authorization", fmt.Sprintf("Client-ID %s", common.AccessKey))
 
 	if err != nil {
 		return t, err
