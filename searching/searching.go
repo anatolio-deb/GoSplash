@@ -1,4 +1,4 @@
-package random
+package searching
 
 import (
 	"encoding/json"
@@ -11,21 +11,25 @@ import (
 	"github.com/anatolio-deb/gosplash/common"
 )
 
-func Get(topicIDs []string) (common.Photo, error) {
+func Get(query string, color string) (common.Photo, error) {
 	var p common.Photo
+	var response struct {
+		Total      int            `json:"total"`
+		TotalPages int            `json:"total_pages"`
+		Results    []common.Photo `json:"results"`
+	}
 	url, err := url.Parse(common.APIURL)
 	if err != nil {
 		return p, err
 	}
-	url.Path = "/photos/random/"
+	url.Path = "/photos/search/"
 	params := url.Query()
+	params.Add("query", query)
+	params.Add("color", color)
 	params.Add("content_filter", "high")
 	params.Add("orientation", "landscape")
-	if len(topicIDs) > 0 {
-		params.Add("topics", strings.Join(topicIDs, ","))
-	}
+	params.Add("per_page", "1")
 	url.RawQuery = params.Encode()
-
 	client := &http.Client{}
 	req, err := http.NewRequest(http.MethodGet, url.String(), strings.NewReader(params.Encode()))
 
@@ -51,5 +55,10 @@ func Get(topicIDs []string) (common.Photo, error) {
 		return p, err
 	}
 
-	return p, json.Unmarshal(b, &p)
+	err = json.Unmarshal(b, &response)
+	if err != nil {
+		return p, err
+	}
+	p = response.Results[0]
+	return p, err
 }
