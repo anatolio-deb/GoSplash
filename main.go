@@ -17,7 +17,7 @@ import (
 func main() {
 	randomCMD := flag.NewFlagSet("random", flag.ContinueOnError)
 	tptr := randomCMD.String("topics", "", "a comma separated list of Unsplash topics, e.g. nature,wallpapers")
-	searchCMD := flag.NewFlagSet("random", flag.ContinueOnError)
+	searchCMD := flag.NewFlagSet("search", flag.ContinueOnError)
 	sptr := searchCMD.String("query", "", "a keyphrase to search")
 	cptr := searchCMD.String("color", "", "a color of images to search")
 	flag.Usage = func() {
