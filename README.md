@@ -7,5 +7,5 @@ GoSplash is a tool for changing wallpapers randomly on Pantheon desktop environm
 
 Usage:
 	gosplash random
-	gosplash random -search=batman	
+	gosplash random -search batman	
 ```
