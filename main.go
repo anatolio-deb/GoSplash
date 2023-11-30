@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/url"
 	"os"
 
@@ -41,25 +40,28 @@ func main() {
 	err := app.Run(os.Args)
 
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 	}
 	var p *common.Photo
 
 	photos, err := random.Get(searchTerm)
 
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		return
 	}
 
 	p = &photos[0]
 
 	link, err := common.GetDownloadURL(p.Links.DownloadLocation)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		return
 	}
 	u, err := url.Parse(link)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		return
 	}
 	var filepath string
 	fm := u.Query().Get("fm")
@@ -68,10 +70,12 @@ func main() {
 	}
 	filepath, err = download(u.String(), p.ID+fmt.Sprintf(".%s", fm))
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		return
 	}
 	err = setWallpaper(filepath)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		return
 	}
 }
