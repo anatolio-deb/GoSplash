@@ -2,11 +2,9 @@ package main
 
 import (
 	"fmt"
-	"net/url"
 	"os"
 
-	"github.com/anatolio-deb/gosplash/common"
-	"github.com/anatolio-deb/gosplash/random"
+	"github.com/anatolio-deb/gosplash/actions"
 	"github.com/urfave/cli"
 )
 
@@ -33,47 +31,17 @@ func main() {
 						Destination: &searchTerm,
 					},
 				},
+				Action: func(c *cli.Context) error { return actions.GetRandomPhoto(searchTerm) },
 			},
 		},
 	}
 
+	if len(os.Args) == 0 {
+		return
+	}
+
 	err := app.Run(os.Args)
 
-	if err != nil {
-		fmt.Println(err)
-	}
-	var p *common.Photo
-
-	photos, err := random.Get(searchTerm)
-
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	p = &photos[0]
-
-	link, err := common.GetDownloadURL(p.Links.DownloadLocation)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	u, err := url.Parse(link)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	var filepath string
-	fm := u.Query().Get("fm")
-	if len(fm) == 0 {
-		fm = "jpg"
-	}
-	filepath, err = download(u.String(), p.ID+fmt.Sprintf(".%s", fm))
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	err = setWallpaper(filepath)
 	if err != nil {
 		fmt.Println(err)
 		return
