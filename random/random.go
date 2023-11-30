@@ -11,18 +11,19 @@ import (
 	"github.com/anatolio-deb/gosplash/common"
 )
 
-func Get(topicIDs []string) (common.Photo, error) {
-	var p common.Photo
+func Get(searchTerm string) ([]common.Photo, error) {
+	var photos []common.Photo
 	url, err := url.Parse(common.APIURL)
 	if err != nil {
-		return p, err
+		return photos, err
 	}
 	url.Path = "/photos/random/"
 	params := url.Query()
 	params.Add("content_filter", "high")
 	params.Add("orientation", "landscape")
-	if len(topicIDs) > 0 {
-		params.Add("topics", strings.Join(topicIDs, ","))
+	params.Add("count", "1")
+	if len(searchTerm) > 0 {
+		params.Add("query", searchTerm)
 	}
 	url.RawQuery = params.Encode()
 
@@ -30,26 +31,26 @@ func Get(topicIDs []string) (common.Photo, error) {
 	req, err := http.NewRequest(http.MethodGet, url.String(), strings.NewReader(params.Encode()))
 
 	if err != nil {
-		return p, err
+		return photos, err
 	}
 
 	req.Header.Add("Authorization", fmt.Sprintf("Client-ID %s", common.AccessKey))
 
 	if err != nil {
-		return p, err
+		return photos, err
 	}
 
 	resp, err := client.Do(req)
 
 	if err != nil {
-		return p, err
+		return photos, err
 	}
 
 	b, err := io.ReadAll(resp.Body)
 
 	if err != nil {
-		return p, err
+		return photos, err
 	}
 
-	return p, json.Unmarshal(b, &p)
+	return photos, json.Unmarshal(b, &photos)
 }
